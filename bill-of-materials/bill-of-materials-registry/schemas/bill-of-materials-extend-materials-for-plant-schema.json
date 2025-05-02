@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "bomUsage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bomAlternative": {
+      "type": "string",
+      "minLength": 1
+    },
+    "validFrom": {
+      "type": "string",
+      "pattern": "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}$"
+    },
+    "ecmNumber": {
+      "type": "string",
+      "minLength": 1
+    },
+    "materialNumbers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["bomUsage", "materialNumbers"],
+  "oneOf": [
+    {
+      "required": ["validFrom"]
+    },
+    {
+      "required": ["ecmNumber"]
+    },
+    {
+      "required": ["validFrom", "ecmNumber"]
+    }
+  ]
+}

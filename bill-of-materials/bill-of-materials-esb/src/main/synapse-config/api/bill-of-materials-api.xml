@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/bill-of-materials/1.0" name="bill-of-materials-api" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET" uri-template="/{materialNumber}">
+        <inSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-get-payload-seq.xml"/>
+            <property name="messageType" scope="axis2" type="STRING" value="application/xml"/>
+            <property action="remove" name="REST_URL_POSTFIX" scope="axis2"/>
+            <property expression="get-property('registry','gov:/com/trumpf/esb/config@RFC_IHUB_BO1')" name="bapiUrl" scope="default"/>
+            <call>
+                <endpoint name="bill-of-materials-Z_PP_BOM_READ-ep">
+                <address uri="https://run.mocky.io/v3/8e0f2895-9f78-4317-b7d0-438834b448ac">
+                        <timeout>
+                            <duration>20000</duration>
+                            <responseAction>fault</responseAction>
+                        </timeout>
+                        <suspendOnFailure>
+                            <errorCodes>-1</errorCodes>
+                            <initialDuration>0</initialDuration>
+                            <progressionFactor>1.0</progressionFactor>
+                            <maximumDuration>0</maximumDuration>
+                        </suspendOnFailure>
+                        <markForSuspension>
+                            <errorCodes>-1</errorCodes>
+                        </markForSuspension>
+                    </address>
+                </endpoint>
+            </call>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-get-response-seq.xml"/>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-fault-seq.xml"/>
+        </faultSequence>
+    </resource>
+    <resource methods="POST" uri-template="/{materialNumber}">
+        <inSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-create-payload-seq.xml"/>
+            <property name="messageType" scope="axis2" type="STRING" value="application/xml"/>
+            <property action="remove" name="REST_URL_POSTFIX" scope="axis2"/>
+            <property expression="get-property('registry','gov:/com/trumpf/esb/config@RFC_IHUB_BO1')" name="bapiUrl" scope="default"/>
+            <call>
+                <endpoint name="bill-of-materials-Z_PP_BOM_CREATE-ep">
+                    <address uri="${bapiUrl}">
+                        <timeout>
+                            <duration>180000</duration>
+                            <responseAction>fault</responseAction>
+                        </timeout>
+                        <suspendOnFailure>
+                            <errorCodes>-1</errorCodes>
+                            <initialDuration>0</initialDuration>
+                            <progressionFactor>1.0</progressionFactor>
+                            <maximumDuration>0</maximumDuration>
+                        </suspendOnFailure>
+                        <markForSuspension>
+                            <errorCodes>-1</errorCodes>
+                        </markForSuspension>
+                    </address>
+                </endpoint>
+            </call>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-create-response-seq.xml"/>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-fault-seq.xml"/>
+        </faultSequence>
+    </resource>
+    <resource methods="PATCH" uri-template="/{materialNumber}">
+        <inSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-update-payload-seq.xml"/>
+            <property name="messageType" scope="axis2" type="STRING" value="application/xml"/>
+            <property action="remove" name="REST_URL_POSTFIX" scope="axis2"/>
+            <property expression="get-property('registry','gov:/com/trumpf/esb/config@RFC_IHUB_BO1')" name="bapiUrl" scope="default"/>
+            <call>
+                <endpoint name="bill-of-materials-Z_PP_BOM_CHANGE-ep">
+                    <address uri="${bapiUrl}">
+                        <timeout>
+                            <duration>180000</duration>
+                            <responseAction>fault</responseAction>
+                        </timeout>
+                        <suspendOnFailure>
+                            <errorCodes>-1</errorCodes>
+                            <initialDuration>0</initialDuration>
+                            <progressionFactor>1.0</progressionFactor>
+                            <maximumDuration>0</maximumDuration>
+                        </suspendOnFailure>
+                        <markForSuspension>
+                            <errorCodes>-1</errorCodes>
+                        </markForSuspension>
+                    </address>
+                </endpoint>
+            </call>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-update-response-seq.xml"/>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-fault-seq.xml"/>
+        </faultSequence>
+    </resource>
+    <resource methods="GET" uri-template="/{materialNumber}/boms">
+        <inSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-boms-get-payload-seq.xml"/>
+            <property name="messageType" scope="axis2" type="STRING" value="application/xml"/>
+            <property action="remove" name="REST_URL_POSTFIX" scope="axis2"/>
+            <property expression="get-property('registry','gov:/com/trumpf/esb/config@RFC_IHUB_BO1')" name="bapiUrl" scope="default"/>
+            <call>
+                <endpoint name="bill-of-materials-Z_PP_BOM_QUERY_BY_MATERIAL-ep">
+                    <address uri="${bapiUrl}">
+                        <timeout>
+                            <duration>180000</duration>
+                            <responseAction>fault</responseAction>
+                        </timeout>
+                        <suspendOnFailure>
+                            <errorCodes>-1</errorCodes>
+                            <initialDuration>0</initialDuration>
+                            <progressionFactor>1.0</progressionFactor>
+                            <maximumDuration>0</maximumDuration>
+                        </suspendOnFailure>
+                        <markForSuspension>
+                            <errorCodes>-1</errorCodes>
+                        </markForSuspension>
+                    </address>
+                </endpoint>
+            </call>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-boms-get-response-seq.xml"/>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence>
+            <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-fault-seq.xml"/>
+        </faultSequence>
+    </resource>
+    <resource methods="POST" uri-template="/{materialNumber}/plant">
+    <inSequence>
+        <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-extend-materials-for-plant-payload-seq.xml"/>
+        <property name="messageType" scope="axis2" type="STRING" value="application/xml"/>
+        <property action="remove" name="REST_URL_POSTFIX" scope="axis2"/>
+
+        <property expression="get-property('registry','gov:/com/trumpf/esb/config@RFC_IHUB_BO1')" name="bapiUrl" scope="default"/>
+        <call>
+            <endpoint name="bill-of-materials-Z_PP_BOM_EXT_MAT_FOR_PLANT-ep">
+                <address uri="${bapiUrl}">
+                    <timeout>
+                        <duration>180000</duration>
+                        <responseAction>fault</responseAction>
+                    </timeout>
+                    <suspendOnFailure>
+                        <errorCodes>-1</errorCodes>
+                        <initialDuration>0</initialDuration>
+                        <progressionFactor>1.0</progressionFactor>
+                        <maximumDuration>0</maximumDuration>
+                    </suspendOnFailure>
+                    <markForSuspension>
+                        <errorCodes>-1</errorCodes>
+                    </markForSuspension>
+                </address>
+            </endpoint>
+        </call>
+        <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-extend-materials-for-plant-response-seq.xml"/>
+        <respond/>
+    </inSequence>
+    <outSequence/>
+    <faultSequence>
+        <sequence key="gov:com/trumpf/esb/services/bill-of-materials/sequences/bill-of-materials-fault-seq.xml"/>
+    </faultSequence>
+</resource>
+</api>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="bill-of-materials-create-payload-seq" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-create-payload-seq"/>
+        <with-param name="Message" value="Starting the bill-of-materials create request flow."/>
+    </call-template>
+    <validate cache-schema="true">
+        <schema key="gov:com/trumpf/esb/services/bill-of-materials/v1/schemas/bill-of-materials-create-schema.json"/>
+        <on-fail>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/error-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-create-payload-seq"/>
+                <with-param name="CUSTOM_ERROR_MESSAGE" value="Invalid request payload, failed json schema validation"/>
+                <with-param name="OUT_ERROR_MESSAGE" value="{concat('Incorrect input payload, ', $ctx:ERROR_MESSAGE)}"/>
+                <with-param name="HTTP_CODE" value="400"/>
+            </call-template>
+            <respond/>
+        </on-fail>
+    </validate>
+    <filter xpath="boolean($body/jsonObject/validFrom) or boolean($body/jsonObject/ecmNumber)">
+        <then/>
+        <else>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/error-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-create-payload-seq"/>
+                <with-param name="OUT_ERROR_MESSAGE" value="Error validating schema , one of 'validFrom' or 'ecmNumber' should be present."/>
+                <with-param name="CUSTOM_ERROR_MESSAGE" value="Error validating schema , one of 'validFrom' or 'ecmNumber' should be present."/>
+                <with-param name="HTTP_CODE" value="400"/>
+            </call-template>
+        </else>
+    </filter>
+    <filter xpath="boolean($body/jsonObject/laboratory) or boolean($body/jsonObject/username)">
+        <then/>
+        <else>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/error-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-update-payload-seq"/>
+                <with-param name="OUT_ERROR_MESSAGE" value="Error validating schema , one of 'laboratory' or 'username' should be present."/>
+                <with-param name="CUSTOM_ERROR_MESSAGE" value="Error validating schema , one of 'laboratory' or 'username' should be present."/>
+                <with-param name="HTTP_CODE" value="400"/>
+            </call-template>
+        </else>
+    </filter>
+    <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-create-payload-transformation.xsl">
+        <property expression="$ctx:uri.var.materialNumber" name="materialNumber"/>
+    </xslt>
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-create-payload-seq"/>
+        <with-param name="Message" value="Ending the bill-of-materials create request flow."/>
+    </call-template>
+</sequence>

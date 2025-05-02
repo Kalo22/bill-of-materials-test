@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="bill-of-materials-get-payload-seq" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-get-payload-seq"/>
+        <with-param name="Message" value="Starting the bill-of-materials get request flow."/>
+    </call-template>
+    <payloadFactory media-type="xml">
+        <format>
+            <root/>
+        </format>
+        <args/>
+    </payloadFactory>
+    <!-- Use xslt to create a payload to send to the SAP -->
+    <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-get-payload-transformation.xsl">
+        <property expression="$ctx:uri.var.materialNumber" name="materialNumber"/>
+        <property expression="$ctx:query.param.plant" name="plant"/>
+        <property expression="$ctx:query.param.bomUsage" name="bomUsage"/>
+        <property expression="$ctx:query.param.bomAlternative" name="bomAlternative"/>
+        <property expression="$ctx:query.param.validFrom" name="validFrom"/>
+        <property expression="$ctx:query.param.validTo" name="validTo"/>
+        <property expression="$ctx:query.param.ecmNumber" name="ecmNumber"/>
+    </xslt>
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-get-payload-seq"/>
+        <with-param name="Message" value="Ending the bill-of-materials get request flow."/>
+    </call-template>
+</sequence>

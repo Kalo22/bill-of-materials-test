@@ -1,0 +1,476 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "plant": {
+      "type": "string"
+    },
+    "bomUsage": {
+      "type": "string"
+    },
+    "bomAlternative": {
+      "type": "string"
+    },
+    "validFrom": {
+      "type": "string"
+    },
+    "ecmNumber": {
+      "type": "string"
+    },
+    "changeNumber": {
+      "type": "string"
+    },
+    "baseQuantity": {
+      "type": "string"
+    },
+    "baseUnit": {
+      "type": "string"
+    },
+    "bomStatus": {
+      "type": "string"
+    },
+    "alternateText": {
+      "type": "string"
+    },
+    "laboratory": {
+      "type": "string"
+    },
+    "deleteIndicator": {
+      "type": "string"
+    },
+    "bomText": {
+      "type": "string"
+    },
+    "bomGroup": {
+      "type": "string"
+    },
+    "authGroup": {
+      "type": "string"
+    },
+    "cadIndicator": {
+      "type": "string"
+    },
+    "lifeCycleIndicator": {
+      "type": "boolean"
+    },
+    "psOfficial": {
+      "type": "string"
+    },
+    "guid": {
+      "type": "string"
+    },
+    "bomNumber": {
+      "type": "string"
+    },
+    "createdOn": {
+      "type": "string"
+    },
+    "validTo": {
+      "type": "string"
+    },
+    "changeNumberTo": {
+      "type": "string"
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "changedOn": {
+      "type": "string"
+    },
+    "changedBy": {
+      "type": "string"
+    },
+    "headerChangeNumber": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "operation": {
+              "type": "string"
+            },
+            "itemCategory": {
+              "type": "string"
+            },
+            "itemNumber": {
+              "type": "string"
+            },
+            "component": {
+              "type": "string"
+            },
+            "componentQuantity": {
+              "type": "string"
+            },
+            "componentUnit": {
+              "type": "string"
+            },
+            "windchillPartUsageLinkId": {
+              "type": "string"
+            },
+            "fixedQuantity": {
+              "type": "boolean"
+            },
+            "itemText1": {
+              "type": "string"
+            },
+            "itemText2": {
+              "type": "string"
+            },
+            "sortString": {
+              "type": "string"
+            },
+            "costRelevant": {
+              "type": "string"
+            },
+            "engineeringRelavent": {
+              "type": "boolean"
+            },
+            "plantMaintenanceRequired": {
+              "type": "boolean"
+            },
+            "prodRelevant": {
+              "type": "boolean"
+            },
+            "salesRelavent": {
+              "type": "boolean"
+            },
+            "sparePart": {
+              "type": "string"
+            },
+            "matProvisioningRequired": {
+              "type": "boolean"
+            },
+            "bulkMaterial": {
+              "type": "boolean"
+            },
+            "recursivenessAllowed": {
+              "type": "boolean"
+            },
+            "componentScrap": {
+              "type": "string"
+            },
+            "operationScrap": {
+              "type": "string"
+            },
+            "netScrap": {
+              "type": "boolean"
+            },
+            "distributionKey": {
+              "type": "string"
+            },
+            "explosionType": {
+              "type": "string"
+            },
+            "specialProcurementType": {
+              "type": "string"
+            },
+            "supplyArea": {
+              "type": "string"
+            },
+            "issueLocation": {
+              "type": "string"
+            },
+            "leadTime": {
+              "type": "string"
+            },
+            "operationLeadTime": {
+              "type": "string"
+            },
+            "operationLeadUnit": {
+              "type": "string"
+            },
+            "coProduct": {
+              "type": "string"
+            },
+            "discontinuationGroup": {
+              "type": "string"
+            },
+            "followUpGroup": {
+              "type": "string"
+            },
+            "alternativeGroup": {
+              "type": "string"
+            },
+            "alternativeStrategy": {
+              "type": "string"
+            },
+            "alternativePriority": {
+              "type": "string"
+            },
+            "usageProbability": {
+              "type": "string"
+            },
+            "referencePoint": {
+              "type": "string"
+            },
+            "pmAssemblyRequired": {
+              "type": "boolean"
+            },
+            "costElement": {
+              "type": "string"
+            },
+            "deliveryTime": {
+              "type": "string"
+            },
+            "groupTime": {
+              "type": "string"
+            },
+            "materialGroup": {
+              "type": "string"
+            },
+            "price": {
+              "type": "string"
+            },
+            "priceUnit": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "purchaseGroup": {
+              "type": "string"
+            },
+            "purchaseOrganisation": {
+              "type": "string"
+            },
+            "vendor": {
+              "type": "string"
+            },
+            "vsiNumber": {
+              "type": "string"
+            },
+            "vsiQuantity": {
+              "type": "string"
+            },
+            "vsiSize1": {
+              "type": "string"
+            },
+            "vsiSize2": {
+              "type": "string"
+            },
+            "vsiSize3": {
+              "type": "string"
+            },
+            "vsiUnit": {
+              "type": "string"
+            },
+            "vsiFormulaKey": {
+              "type": "string"
+            },
+            "document": {
+              "type": "string"
+            },
+            "documentType": {
+              "type": "string"
+            },
+            "documentPart": {
+              "type": "string"
+            },
+            "documentVersion": {
+              "type": "string"
+            },
+            "class": {
+              "type": "string"
+            },
+            "classType": {
+              "type": "string"
+            },
+            "resultingItemCategory": {
+              "type": "boolean"
+            },
+            "selectionCondition": {
+              "type": "boolean"
+            },
+            "requiredComponent": {
+              "type": "boolean"
+            },
+            "multiSelectAllowed": {
+              "type": "boolean"
+            },
+            "highLevelConfig": {
+              "type": "boolean"
+            },
+            "cadIndicator": {
+              "type": "boolean"
+            },
+            "itemId": {
+              "type": "string"
+            },
+            "itemGuid": {
+              "type": "string"
+            },
+            "validFrom": {
+              "type": "string"
+            },
+            "changeNumber": {
+              "type": "string"
+            },
+            "identifier": {
+              "type": "string"
+            },
+            "unloadingPoint": {
+              "type": "string"
+            },
+            "goodsReceipt": {
+              "type": "string"
+            },
+            "segmentValue": {
+              "type": "string"
+            },
+            "lifeCycle": {
+              "type": "string"
+            },
+            "looseBomPart": {
+              "type": "boolean"
+            },
+            "bomCategory": {
+              "type": "boolean"
+            },
+            "billOfMaterial": {
+              "type": "string"
+            },
+            "bomItemNodeNumber": {
+              "type": "string"
+            },
+            "internalCounter": {
+              "type": "string"
+            },
+            "installedAmount": {
+              "type": "string"
+            },
+            "recommendedQuantity": {
+              "type": "string"
+            },
+            "reducedBom": {
+              "type": "string"
+            },
+            "recommendedSparepart": {
+              "type": "boolean"
+            },
+            "option": {
+              "type": "boolean"
+            },
+            "cleaningClassParticularPC": {
+              "type": "string"
+            },
+            "cleaningClassParticularFC": {
+              "type": "string"
+            },
+            "cleaningClassParticularVC": {
+              "type": "string"
+            },
+            "clnDocumentNumber": {
+              "type": "string"
+            },
+            "clnDocumentType": {
+              "type": "string"
+            },
+            "clnDocumentVersion": {
+              "type": "string"
+            },
+            "clnDocumentPart": {
+              "type": "string"
+            },
+            "cuFactor": {
+              "type": "string"
+            },
+            "criticalComponent": {
+              "type": "boolean"
+            },
+            "criticalLevel": {
+              "type": "string"
+            },
+            "bomNumber": {
+              "type": "string"
+            },
+            "itemNodeNumber": {
+              "type": "string"
+            },
+            "itemCount": {
+              "type": "string"
+            },
+            "recursive": {
+              "type": "boolean"
+            },
+            "dependencyLink": {
+              "type": "string"
+            },
+            "aleIndicator": {
+              "type": "boolean"
+            },
+            "validTo": {
+              "type": "string"
+            },
+            "changeNumberTo": {
+              "type": "string"
+            },
+            "createdOn": {
+              "type": "string"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "changeOn": {
+              "type": "string"
+            },
+            "changedBy": {
+              "type": "string"
+            },
+            "alternateBom": {
+              "type": "string"
+            },
+            "deleteIndicator": {
+              "type": "boolean"
+            },
+            "segmentRelavent": {
+              "type": "boolean"
+            },
+            "idItemCategory": {
+              "type": "string"
+            },
+            "idItemNumber": {
+              "type": "string"
+            },
+            "idComponent": {
+              "type": "string"
+            },
+            "idClass": {
+              "type": "string"
+            },
+            "idClassType": {
+              "type": "string"
+            },
+            "idDocumentNumber": {
+              "type": "string"
+            },
+            "idDocumentType": {
+              "type": "string"
+            },
+            "idDocumentPart": {
+              "type": "string"
+            },
+            "idDocumentVersion": {
+              "type": "string"
+            },
+            "idSort": {
+              "type": "string"
+            },
+            "guid": {
+              "type": "string"
+            }
+          },
+          "required": [
+                    "operation",
+                    "windchillPartUsageLinkId"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+      "bomUsage"
+  ]
+}

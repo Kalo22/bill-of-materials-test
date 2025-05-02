@@ -1,0 +1,2091 @@
+---
+openapi: 3.0.3
+info:
+  title: Bill-of-Materials API
+  description: This document describe a RESTFul API for Bill Of Materials.
+  version: "1.1"
+servers:
+  - url: https://srv01eisamo1d.corp.trumpf.com/bill-of-materials/1.0
+    description: Development server
+  - url: https://api-t-restricted.corp.trumpf.com/bill-of-materials/1.0
+    description: QA gateway
+  - url: https://api-restricted.corp.trumpf.com/bill-of-materials/1.0
+    description: Trusted third party production gateway
+  - url: https://api-public.corp.trumpf.com/bill-of-materials/1.0
+    description: Public production gateway
+  - url: https://api-internal.corp.trumpf.com/bill-of-materials/1.0
+    description: Internal production gateway
+x-wso2-security:
+  apim:
+    x-wso2-scopes:
+      - name: bom:write
+        key: bom:write
+        description: Right to change material data
+        roles: "Internal/bom_write"
+      - name: bom:read
+        key: bom:read
+        description: Right to change material data
+        roles: "Internal/bom_read"
+paths:
+  "/{materialNumber}":
+    get:
+      summary: Get bill of materials for a material number
+      x-scope: bom:read
+      tags:
+        - bom
+      security:
+        - default:
+            - 'bom:read'
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+      parameters:
+        - name: materialNumber
+          in: path
+          example: 2410549
+          schema:
+            type: string
+          required: true
+        - name: plant
+          in: query
+          schema:
+            type: string
+        - name: bomUsage
+          in: query
+          schema:
+            type: string
+            enum:
+                  [
+                    "1",
+                    "2",
+                    "'3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "U",
+                    "E",
+                    "M"
+                  ]
+            example: 1
+          required: true
+        - name: bomAlternative
+          in: query
+          schema:
+            type: string
+        - name: validFrom
+          in: query
+          schema:
+            type: string
+            example: 01.01.1900
+          required: true
+        - name: validTo
+          in: query
+          schema:
+            type: string
+            example: 31.12.9999
+        - name: changeNumber
+          in: query
+          schema:
+            type: string
+            example: 457-01
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getBomResponse"
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequest"
+        "404":
+          description: BOM Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/notFound"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/internalError"
+    post:
+      summary: Create bill of materials for a material number in SAP
+      x-scope: bom:write
+      tags:
+        - bom
+      security:
+        - default:
+            - 'bom:write'
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+      parameters:
+        - name: materialNumber
+          in: path
+          example: 2410549
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/createBomItems"
+      responses:
+        "201":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/createBomItemsResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequest"
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/conflict"
+        "500":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/internalError"
+    patch:
+      summary: update bill of materials items for a material number in SAP
+      x-scope: bom:write
+      tags:
+        - bom
+      security:
+        - default:
+            - 'bom:write'
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+      parameters:
+        - name: materialNumber
+          in: path
+          example: 2410549
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/updateBomItems"
+      responses:
+        "201":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/updateBomItemsResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequest"
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/conflict"
+        "500":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/internalError"
+  /{materialNumber}/boms:
+    get:
+      summary: Get boms for a material number
+      x-scope: bom:read
+      tags:
+        - bom
+      security:
+        - default:
+            - 'bom:read'
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+      parameters:
+        - name: materialNumber
+          in: path
+          example: 2410549
+          schema:
+            type: string
+          required: true
+        - name: validFrom
+          in: query
+          schema:
+            type: string
+            example: YYYYMMDD
+        - name: changeNumber
+          in: query
+          schema:
+            type: string
+            example: 457-01
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getBomsResponse"
+        "404":
+          description: BOM Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/notFound"
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequest"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/internalError"
+  /{materialNumber}/plant:
+    post:
+      summary: Extend materials for the plant for a material number in SAP
+      x-scope: bom:write
+      tags:
+        - bom
+      security:
+        - default:
+            - 'bom:write'
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+      parameters:
+        - name: materialNumber
+          in: path
+          example: 2410549
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/extendMaterialsForPlant"
+      responses:
+        "201":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/extendMaterialsForPlantResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/badRequest"
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+        "500":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/internalError"
+components:
+  schemas:
+    badRequest:
+      type: object
+      properties:
+        "message":
+          type: string
+          example: Input payload failed to pass validation
+    conflict:
+      type: object
+      properties:
+        "message":
+          type: string
+          example: Already Existing/Deleted Resourse
+    internalError:
+      type: object
+      properties:
+        "message":
+          type: string
+          example: Ooops... something unexpected happened
+    notFound:
+      type: object
+      properties:
+        error:
+          type: string
+          example: No boms found for requested material number.
+    unauthorized:
+      type: object
+      properties:
+        "message":
+          type: string
+          example: User unauthorized for requested operation.
+    getBomResponse:
+      type: object
+      properties:
+        baseQuantity:
+         type: string
+         example: 1
+        baseUnit:
+         type: string
+         example: ST
+        bomStatus:
+         type: string
+         example: 'example'
+        alternateText:
+         type: string
+         example: 'example'
+        laboratory:
+         type: string
+         example: '000'
+        deleteIndicator:
+         type: boolean
+         example: true
+        bomText:
+         type: string
+         example: 'example'
+        bomGroup:
+         type: string
+         example: 'example'
+        authGroup:
+         type: string
+         example: 'example'
+        cadIndicator:
+         type: boolean
+         example: true
+        lifeCycleRelevalent:
+         type: boolean
+         example: true
+        pssOfficial:
+         type: string
+         example: 'example'
+        idGuid:
+         type: string
+         example: 'example'
+        bomNumber:
+         type: string
+         example: 'example'
+        aleIndicator:
+         type: boolean
+         example: true
+        validTo:
+         type: string
+         example: 'example'
+        changeNumberTo:
+         type: string
+         example: 'example'
+        createdOn:
+         type: string
+         example: 'example'
+        createdBy:
+         type: string
+         example: 'example'
+        changedOn:
+         type: string
+         example: 'example'
+        changedBy:
+         type: string
+         example: 'example'
+        validFrom:
+         type: string
+         example: 'example'
+        headerChangeNumber:
+         type: string
+         example: 'example'
+        items:
+         type: array
+         items:
+          type: object
+          properties:
+            itemCategory:
+              type: string
+              example: 'L'
+            itemNumber:
+              type: string
+              example: '0010'
+            component:
+              type: string
+              example: '0016349'
+            componentQuantity:
+             type: string
+             example: '1'
+            componentUnit:
+             type: string
+             example: 'ST'
+            fixedQuantity:
+             type: boolean
+             example: true
+            itemText1:
+              type: string
+              example: 'example'
+            itemText2:
+              type: string
+              example: 'example'
+            sortString:
+              type: string
+              example: 'example'
+            costRelevant:
+              type: boolean
+              example: 'example'
+            engineeringRelavent:
+              type: boolean
+              example: true
+            plantMaintenanceRequired:
+              type: boolean
+              example: true
+            prodRelevant:
+              type: boolean
+              example: true
+            salesRelavent:
+              type: boolean
+              example: true
+            sparePart:
+              type: boolean
+              example: true
+            matProvisioningRequired:
+              type: boolean
+              example: true
+            bulkMaterial:
+              type: boolean
+              example: true
+            recursivenessAllowed:
+              type: boolean
+              example: true
+            componentScrap:
+              type: string
+              example: 'example'
+            operationScrap:
+              type: string
+              example: 'example'
+            netScrap:
+              type: boolean
+              example: true
+            distributionKey:
+              type: string
+              example: 'example'
+            explosionType:
+              type: string
+              example: 'example'
+            specialProcurementType:
+              type: string
+              example: 'example'
+            supplyArea:
+              type: string
+              example: 'example'
+            issueLocation:
+              type: string
+              example: 'example'
+            leadTime:
+             type: string
+             example: 'example'
+            operationLeadTime:
+             type: string
+             example: 'example'
+            operationLeadUnit:
+             type: string
+             example: 'example'
+            coProduct:
+              type: string
+              example: 'example'
+            discontinuationGroup:
+              type: string
+              example: 'example'
+            followUpGroup:
+              type: string
+              example: 'example'
+            alternativeGroup:
+              type: string
+              example: 'example'
+            alternativeStrategy:
+              type: string
+              example: 'example'
+            alternativePriority:
+              type: string
+              example: 'example'
+            usageProbability:
+              type: string
+              example: 'example'
+            referencePoint:
+              type: string
+              example: 'example'
+            pmAssemblyRequired:
+              type: boolean
+              example: true
+            costElement:
+              type: string
+              example: 'example'
+            deliveryTime:
+              type: string
+              example: 'example'
+            groupTime:
+              type: string
+              example: 'example'
+            materialGroup:
+              type: string
+              example: 'example'
+            price:
+              type: string
+              example: 'example'
+            priceUnit:
+              type: string
+              example: 'example'
+            currency:
+              type: string
+              example: 'example'
+            purchaseGroup:
+              type: string
+              example: 'example'
+            purchaseOrganisation:
+              type: string
+              example: 'example'
+            vendor:
+              type: string
+              example: 'example'
+            vsiNumber:
+              type: string
+              example: 'example'
+            vsiQuantity:
+              type: string
+              example: 'example'
+            vsiSize1:
+             type: string
+             example: 'example'
+            vsiSize2:
+             type: string
+             example: 'example'
+            vsiSize3:
+             type: string
+             example: 'example'
+            vsiUnit:
+              type: string
+              example: 'example'
+            vsiFormulaKey:
+              type: string
+              example: 'example'
+            document:
+              type: string
+              example: 'example'
+            documentType:
+              type: string
+              example: 'example'
+            documentPart:
+              type: string
+              example: 'example'
+            documentVersion:
+              type: string
+              example: 'example'
+            class:
+              type: string
+              example: 'example'
+            classType:
+              type: string
+              example: 'example'
+            resultingItemCategory:
+              type: boolean
+              example: true
+            selectionCondition:
+              type: boolean
+              example: true
+            requiredComponent:
+              type: boolean
+              example: true
+            multiSelectAllowed:
+              type: boolean
+              example: true
+            highLevelConfig:
+              type: boolean
+              example: true
+            cadIndicator:
+              type: boolean
+              example: true
+            itemId:
+              type: string
+              example: 'example'
+            itemGuid:
+              type: string
+              example: 'example'
+            validFrom:
+              type: string
+              example: 'example'
+            changeNumber:
+              type: string
+              example: 'example'
+            identifier:
+              type: string
+              example: 'example'
+            unloadPoint:
+              type: string
+              example: 'example'
+            goodsReceipt:
+              type: string
+              example: 'example'
+            segmentValue:
+              type: string
+              example: 'example'
+            lifeCycle:
+              type: string
+              example: 'example'
+            looseBomPart:
+              type: boolean
+              example: true
+            bomCategory:
+              type: boolean
+              example: true
+            billOfMaterial:
+              type: string
+              example: 'example'
+            bomItemNodeNumber:
+              type: string
+              example: 'example'
+            internalCounter:
+              type: string
+              example: 'example'
+            installedAmount:
+              type: string
+              example: 'example'
+            recommendedQuantity:
+              type: string
+              example: 'example'
+            reducedBom:
+              type: boolean
+              example: true
+            recommendedSparepart:
+              type: boolean
+              example: true
+            option:
+              type: boolean
+              example: true
+            cleaningClassParticularPC:
+              type: string
+              example: 'example'
+            cleaningClassParticularFC:
+              type: string
+              example: 'example'
+            cleaningClassParticularVC:
+              type: string
+              example: 'example'
+            clnDocumentNumber:
+              type: string
+              example: 'example'
+            clnDocumentType:
+              type: string
+              example: 'example'
+            clnDocumentVersion:
+              type: string
+              example: 'example'
+            clnDocumentPart:
+              type: string
+              example: 'example'
+            cuFactor:
+              type: string
+              example: 'example'
+            criticalComponent:
+              type: boolean
+              example: true
+            criticalLevel:
+              type: string
+              example: 'example'
+            bomNumber:
+              type: string
+              example: 'example'
+            itmeNode:
+              type: string
+              example: 'example'
+            itemCount:
+              type: string
+              example: 'example'
+            recursive:
+              type: boolean
+              example: true
+            dependencyLink:
+              type: string
+              example: 'example'
+            aleIndicator:
+              type: boolean
+              example: true
+            validTo:
+              type: string
+              example: 'example'
+            changeNumberTo:
+              type: string
+              example: 'example'
+            createdOn:
+              type: string
+              example: 'example'
+            createdBy:
+              type: string
+              example: 'example'
+            changeOn:
+              type: string
+              example: 'example'
+            changedBy:
+              type: string
+              example: 'example'
+            alternateBom:
+              type: string
+              example: 'example'
+            deleteIndicator:
+              type: boolean
+              example: true
+            segmentRelavent:
+              type: boolean
+              example: true
+    getBomsResponse:
+         type: array
+         items:
+          type: object
+          properties:
+            materialNumber:
+              type: string
+              example: 'example'
+            plant:
+              type: string
+              example: 'example'
+            bomUsage:
+              type: string
+              example: 'example'
+            bomInternalNumber:
+             type: string
+             example: 'example'
+            lotSizeFrom:
+             type: string
+             example: 'example'
+            lotSizeTo:
+             type: string
+             example: 'example'
+            changedOn:
+              type: string
+              example: 'example'
+            mvFlag:
+              type: boolean
+              example: false
+            bomCategory:
+              type: string
+              example: 'example'
+            internalCounter:
+              type: boolean
+              example: 'example'
+            validFrom:
+              type: string
+              example: 'example'
+            technicalStatus:
+              type: string
+              example: 'example'
+            changeNumber:
+              type: string
+              example: 'example'
+            deleteIndicator:
+              type: boolean
+              example: true
+            deletionFlag:
+              type: boolean
+              example: true
+            headerCounter:
+              type: string
+              example: 'example'
+            createdOn:
+              type: string
+              example: 'example'
+            createdBy:
+              type: string
+              example: 'example'
+            changedBy:
+              type: string
+              example: 'example'
+            baseUOM:
+              type: string
+              example: 'example'
+            baseQuantity:
+              type: boolean
+              example: true
+            distributionKey:
+              type: string
+              example: 'example'
+            cadFlg:
+              type: boolean
+              example: false
+            laboratory:
+              type: string
+              example: 'example'
+            longTextLanguage:
+              type: string
+              example: 'example'
+            bomAlternativeText:
+              type: string
+              example: 'example'
+            bomStatus:
+             type: string
+             example: 'example'
+            createdInPlant:
+             type: string
+             example: 'example'
+            lastDateShift:
+             type: string
+             example: 'example'
+            lastDateShiftBy:
+              type: string
+              example: 'example'
+            discontinuationGroup:
+              type: string
+              example: 'example'
+            lastDateShiftHirarchy:
+              type: string
+              example: 'example'
+            aleIndicator:
+              type: boolean
+              example: false
+            guid:
+              type: string
+              example: 'example'
+            validTo:
+              type: string
+              example: 'example'
+            validToRKey:
+              type: string
+              example: 'example'
+            ecnTo:
+              type: string
+              example: 'example'
+            ecnToRKey:
+              type: boolean
+              example: true
+            lifeCycleRelavent:
+              type: string
+              example: 'example'
+            pssOfficial:
+              type: string
+              example: 'example'
+    updateBomItems:
+      type: object
+      properties:
+        plant:
+          type: string
+          example: ''
+        bomUsage:
+          type: string
+          example: 1
+        bomAlternative:
+          type: string
+          example: ''
+        validFrom:
+          type: string
+          example: '01.07.2022'
+        changeNumber:
+           type: string
+           example:
+        baseQuantity:
+         type: string
+         example: 1
+        baseUnit:
+         type: string
+         example: ST
+        bomStatus:
+         type: string
+         example: 'example'
+        alternateText:
+         type: string
+         example: 'example'
+        laboratory:
+         type: string
+         example: '000'
+        deleteIndicator:
+         type: boolean
+         example: true
+        bomText:
+         type: string
+         example: 'example'
+        bomGroup:
+         type: string
+         example: 'example'
+        authGroup:
+         type: string
+         example: 'example'
+        cadIndicator:
+         type: boolean
+         example: true
+        lifeCycleRelevalent:
+         type: boolean
+         example: true
+        pssOfficial:
+         type: string
+         example: 'example'
+        idGuid:
+         type: string
+         example: 'example'
+        bomNumber:
+         type: string
+         example: 'example'
+        aleIndicator:
+         type: boolean
+         example: true
+        validTo:
+         type: string
+         example: 'example'
+        changeNumberTo:
+         type: string
+         example: 'example'
+        createdOn:
+         type: string
+         example: 'example'
+        createdBy:
+         type: string
+         example: 'example'
+        changedOn:
+         type: string
+         example: 'example'
+        changedBy:
+         type: string
+         example: 'example'
+        headerChangeNumber:
+         type: string
+         example: 'example'
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              operation:
+                type: string
+                example: 'N'
+              itemCategory:
+                type: string
+                example: 'L'
+              itemNumber:
+                type: string
+                example: '0017'
+              component:
+                type: string
+                example: '0016349'
+              componentQuantity:
+               type: string
+               example: '2'
+              componentUnit:
+               type: string
+               example: 'ST'
+              fixedQuantity:
+               type: boolean
+               example:
+              itemText1:
+                type: string
+                example: ''
+              itemText2:
+                type: string
+                example: ''
+              sortString:
+                type: string
+                example: ''
+              costRelevant:
+                type: boolean
+                example: ''
+              engineeringRelavent:
+                type: boolean
+                example: ''
+              plantMaintenanceRequired:
+                type: boolean
+                example: ''
+              prodRelevant:
+                type: boolean
+                example: ''
+              salesRelavent:
+                type: boolean
+                example: ''
+              sparePart:
+                type: boolean
+                example: ''
+              matProvisioningRequired:
+                type: string
+                example: ''
+              bulkMaterial:
+                type: boolean
+                example: ''
+              recursivenessAllowed:
+                type: boolean
+                example: ''
+              componentScrap:
+                type: string
+                example: ''
+              operationScrap:
+                type: string
+                example: ''
+              netScrap:
+                type: boolean
+                example: ''
+              distributionKey:
+                type: string
+                example: ''
+              explosionType:
+                type: string
+                example: ''
+              specialProcurementType:
+                type: string
+                example: test
+              supplyArea:
+                type: string
+                example: ''
+              issueLocation:
+                type: string
+                example: ''
+              leadTime:
+               type: string
+               example: ''
+              operationLeadTime:
+               type: string
+               example: ''
+              operationLeadUnit:
+               type: string
+               example: ''
+              coProduct:
+                type: string
+                example: ''
+              discontinuationGroup:
+                type: string
+                example: ''
+              followUpGroup:
+                type: string
+                example: ''
+              alternativeGroup:
+                type: string
+                example: ''
+              alternativeStrategy:
+                type: string
+                example: ''
+              alternativePriority:
+                type: string
+                example: ''
+              usageProbability:
+                type: string
+                example: ''
+              referencePoint:
+                type: string
+                example: ''
+              pmAssemblyRequired:
+                type: boolean
+                example: ''
+              costElement:
+                type: string
+                example: ''
+              deliveryTime:
+                type: string
+                example: ''
+              groupTime:
+                type: string
+                example: ''
+              materialGroup:
+                type: string
+                example: ''
+              price:
+                type: string
+                example: ''
+              priceUnit:
+                type: string
+                example: ''
+              currency:
+                type: string
+                example: ''
+              purchaseGroup:
+                type: string
+                example: ''
+              purchaseOrganisation:
+                type: string
+                example: test
+              vendor:
+                type: string
+                example: 'DE'
+              vsiNumber:
+                type: string
+                example: ''
+              vsiQuantity:
+                type: string
+                example: ''
+              vsiSize1:
+               type: string
+               example: ''
+              vsiSize2:
+               type: string
+               example: ''
+              vsiSize3:
+               type: string
+               example: ''
+              vsiUnit:
+                type: string
+                example: ''
+              vsiFormulaKey:
+                type: string
+                example: ''
+              document:
+                type: string
+                example: ''
+              documentType:
+                type: string
+                example: ''
+              documentPart:
+                type: string
+                example: ''
+              documentVersion:
+                type: string
+                example: ''
+              class:
+                type: string
+                example: ''
+              classType:
+                type: string
+                example: ''
+              resultingItemCategory:
+                type: string
+                example: ''
+              selectionCondition:
+                type: boolean
+                example: ''
+              requiredComponent:
+                type: boolean
+                example: ''
+              multiSelectAllowed:
+                type: boolean
+                example: ''
+              highLevelConfig:
+                type: boolean
+                example: ''
+              cadIndicator:
+                type: boolean
+                example: ''
+              itemId:
+                type: string
+                example: ''
+              itemGuid:
+                type: string
+                example: ''
+              validFrom:
+                type: string
+                example: ''
+              changeNumber:
+                type: string
+                example: ''
+              identifier:
+                type: string
+                example: ''
+              unloadPoint:
+                type: string
+                example: ''
+              goodsReceipt:
+                type: string
+                example: ''
+              segmentValue:
+                type: string
+                example: ''
+              lifeCycle:
+                type: string
+                example: ''
+              looseBomPart:
+                type: boolean
+                example: ''
+              bomCategory:
+                type: boolean
+                example: ''
+              billOfMaterial:
+                type: string
+                example: ''
+              bomItemNodeNumber:
+                type: string
+                example: ''
+              internalCounter:
+                type: string
+                example: ''
+              installedAmount:
+                type: string
+                example: ''
+              recommendedQuantity:
+                type: string
+                example: ''
+              reducedBom:
+                type: boolean
+                example: ''
+              recommendedSparepart:
+                type: boolean
+                example: ''
+              option:
+                type: string
+                example: ''
+              cleaningClassParticularPC:
+                type: string
+                example: ''
+              cleaningClassParticularFC:
+                type: string
+                example: ''
+              cleaningClassParticularVC:
+                type: string
+                example: ''
+              clnDocumentNumber:
+                type: string
+                example: ''
+              clnDocumentType:
+                type: string
+                example: ''
+              clnDocumentVersion:
+                type: string
+                example: ''
+              clnDocumentPart:
+                type: string
+                example: ''
+              cuFactor:
+                type: string
+                example: ''
+              criticalComponent:
+                type: string
+                example: ''
+              criticalLevel:
+                type: string
+                example: ''
+              bomNumber:
+                type: string
+                example: ''
+              itmeNode:
+                type: string
+                example: ''
+              itemCount:
+                type: string
+                example: ''
+              recursive:
+                type: boolean
+                example: ''
+              dependencyLink:
+                type: string
+                example: ''
+              aleIndicator:
+                type: boolean
+                example: ''
+              validTo:
+                type: string
+                example: ''
+              changeNumberTo:
+                type: string
+                example: ''
+              createdOn:
+                type: string
+                example: ''
+              createdBy:
+                type: string
+                example: ''
+              changeOn:
+                type: string
+                example: ''
+              changedBy:
+                type: string
+                example: ''
+              alternateBom:
+                type: string
+                example: ''
+              deleteIndicator:
+                type: boolean
+                example: ''
+              segmentRelavent:
+                type: boolean
+                example: ''
+              idItemCategory:
+                type: string
+                example: ''
+              idItemNumber:
+                type: string
+                example: ''
+              idComponent:
+                type: string
+                example: ''
+              idClass:
+                type: string
+                example: ''
+              idClassType:
+                type: string
+                example: ''
+              idDocumentNumber:
+                type: string
+                example: ''
+              idDocumentType:
+                type: string
+                example: ''
+              idDocumentPart:
+                type: string
+                example: ''
+              idDocumentVersion:
+                type: string
+                example: ''
+              idSort:
+                type: string
+              idGuid:
+                type: string
+                example: ''
+    updateBomItemsResponse:
+      type: object
+      properties:
+        plant:
+          type: string
+          example: ''
+        bomUsage:
+          type: string
+          example: 1
+        bomAlternative:
+          type: string
+          example: ''
+        validFrom:
+          type: string
+          example: '01.07.2022'
+        changeNumber:
+           type: string
+           example:
+        baseQuantity:
+         type: string
+         example: 1
+        baseUnit:
+         type: string
+         example: ST
+        bomStatus:
+         type: string
+         example: 'example'
+        alternateText:
+         type: string
+         example: 'example'
+        laboratory:
+         type: string
+         example: '000'
+        deleteIndicator:
+         type: boolean
+         example: true
+        bomText:
+         type: string
+         example: 'example'
+        bomGroup:
+         type: string
+         example: 'example'
+        authGroup:
+         type: string
+         example: 'example'
+        cadIndicator:
+         type: boolean
+         example: true
+        lifeCycleRelevalent:
+         type: boolean
+         example: true
+        pssOfficial:
+         type: string
+         example: 'example'
+        idGuid:
+         type: string
+         example: 'example'
+        bomNumber:
+         type: string
+         example: 'example'
+        aleIndicator:
+         type: boolean
+         example: true
+        validTo:
+         type: string
+         example: 'example'
+        changeNumberTo:
+         type: string
+         example: 'example'
+        createdOn:
+         type: string
+         example: 'example'
+        createdBy:
+         type: string
+         example: 'example'
+        changedOn:
+         type: string
+         example: 'example'
+        changedBy:
+         type: string
+         example: 'example'
+        headerChangeNumber:
+         type: string
+         example: 'example'
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              operation:
+                type: string
+                example: 'N'
+              itemCategory:
+                type: string
+                example: 'L'
+              itemNumber:
+                type: string
+                example: '0017'
+              bomItemNodeNumber:
+                type: string
+                example: ''
+              itemCount:
+                type: string
+                example: ''
+              windchillPartUsageLinkId:
+                type: string
+                example: '346204'
+    createBomItems:
+      type: object
+      properties:
+        plant:
+          type: string
+          example: ''
+        bomUsage:
+          type: string
+          example: 1
+        bomAlternative:
+          type: string
+          example: ''
+        validFrom:
+          type: string
+          example: '01.07.2022'
+        changeNumber:
+           type: string
+           example:
+        baseQuantity:
+         type: string
+         example: 1
+        baseUnit:
+         type: string
+         example: ST
+        bomStatus:
+         type: string
+         example: 'example'
+        alternateText:
+         type: string
+         example: 'example'
+        laboratory:
+         type: string
+         example: '000'
+        deleteIndicator:
+         type: boolean
+         example: true
+        bomText:
+         type: string
+         example: 'example'
+        bomGroup:
+         type: string
+         example: 'example'
+        authGroup:
+         type: string
+         example: 'example'
+        cadIndicator:
+         type: boolean
+         example: true
+        lifeCycleRelevalent:
+         type: boolean
+         example: true
+        pssOfficial:
+         type: string
+         example: 'example'
+        idGuid:
+         type: string
+         example: 'example'
+        bomNumber:
+         type: string
+         example: 'example'
+        aleIndicator:
+         type: boolean
+         example: true
+        validTo:
+         type: string
+         example: 'example'
+        changeNumberTo:
+         type: string
+         example: 'example'
+        createdOn:
+         type: string
+         example: 'example'
+        createdBy:
+         type: string
+         example: 'example'
+        changedOn:
+         type: string
+         example: 'example'
+        changedBy:
+         type: string
+         example: 'example'
+        headerChangeNumber:
+         type: string
+         example: 'example'
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              itemCategory:
+                type: string
+                example: 'L'
+              itemNumber:
+                type: string
+                example: '0017'
+              windchillPartUsageLinkId:
+                type: string
+                example: '346204'
+              component:
+                type: string
+                example: '0016349'
+              componentQuantity:
+               type: string
+               example: '2'
+              componentUnit:
+               type: string
+               example: 'ST'
+              fixedQuantity:
+               type: boolean
+               example:
+              itemText1:
+                type: string
+                example: ''
+              itemText2:
+                type: string
+                example: ''
+              sortString:
+                type: string
+                example: ''
+              costRelevant:
+                type: boolean
+                example: ''
+              engineeringRelavent:
+                type: boolean
+                example: ''
+              plantMaintenanceRequired:
+                type: boolean
+                example: ''
+              prodRelevant:
+                type: boolean
+                example: ''
+              salesRelavent:
+                type: boolean
+                example: ''
+              sparePart:
+                type: boolean
+                example: ''
+              matProvisioningRequired:
+                type: string
+                example: ''
+              bulkMaterial:
+                type: boolean
+                example: ''
+              recursivenessAllowed:
+                type: boolean
+                example: ''
+              componentScrap:
+                type: string
+                example: ''
+              operationScrap:
+                type: string
+                example: ''
+              netScrap:
+                type: boolean
+                example: ''
+              distributionKey:
+                type: string
+                example: ''
+              explosionType:
+                type: string
+                example: ''
+              specialProcurementType:
+                type: string
+                example: test
+              supplyArea:
+                type: string
+                example: ''
+              issueLocation:
+                type: string
+                example: ''
+              leadTime:
+               type: string
+               example: ''
+              operationLeadTime:
+               type: string
+               example: ''
+              operationLeadUnit:
+               type: string
+               example: ''
+              coProduct:
+                type: string
+                example: ''
+              discontinuationGroup:
+                type: string
+                example: ''
+              followUpGroup:
+                type: string
+                example: ''
+              alternativeGroup:
+                type: string
+                example: ''
+              alternativeStrategy:
+                type: string
+                example: ''
+              alternativePriority:
+                type: string
+                example: ''
+              usageProbability:
+                type: string
+                example: ''
+              referencePoint:
+                type: string
+                example: ''
+              pmAssemblyRequired:
+                type: boolean
+                example: ''
+              costElement:
+                type: string
+                example: ''
+              deliveryTime:
+                type: string
+                example: ''
+              groupTime:
+                type: string
+                example: ''
+              materialGroup:
+                type: string
+                example: ''
+              price:
+                type: string
+                example: ''
+              priceUnit:
+                type: string
+                example: ''
+              currency:
+                type: string
+                example: ''
+              purchaseGroup:
+                type: string
+                example: ''
+              purchaseOrganisation:
+                type: string
+                example: test
+              vendor:
+                type: string
+                example: 'DE'
+              vsiNumber:
+                type: string
+                example: ''
+              vsiQuantity:
+                type: string
+                example: ''
+              vsiSize1:
+               type: string
+               example: ''
+              vsiSize2:
+               type: string
+               example: ''
+              vsiSize3:
+               type: string
+               example: ''
+              vsiUnit:
+                type: string
+                example: ''
+              vsiFormulaKey:
+                type: string
+                example: ''
+              document:
+                type: string
+                example: ''
+              documentType:
+                type: string
+                example: ''
+              documentPart:
+                type: string
+                example: ''
+              documentVersion:
+                type: string
+                example: ''
+              class:
+                type: string
+                example: ''
+              classType:
+                type: string
+                example: ''
+              resultingItemCategory:
+                type: string
+                example: ''
+              selectionCondition:
+                type: boolean
+                example: ''
+              requiredComponent:
+                type: boolean
+                example: ''
+              multiSelectAllowed:
+                type: boolean
+                example: ''
+              highLevelConfig:
+                type: boolean
+                example: ''
+              cadIndicator:
+                type: boolean
+                example: ''
+              itemId:
+                type: string
+                example: ''
+              itemGuid:
+                type: string
+                example: ''
+              validFrom:
+                type: string
+                example: ''
+              changeNumber:
+                type: string
+                example: ''
+              identifier:
+                type: string
+                example: ''
+              unloadPoint:
+                type: string
+                example: ''
+              goodsReceipt:
+                type: string
+                example: ''
+              segmentValue:
+                type: string
+                example: ''
+              lifeCycle:
+                type: string
+                example: ''
+              looseBomPart:
+                type: boolean
+                example: ''
+              bomCategory:
+                type: boolean
+                example: ''
+              billOfMaterial:
+                type: string
+                example: ''
+              bomItemNodeNumber:
+                type: string
+                example: ''
+              internalCounter:
+                type: string
+                example: ''
+              installedAmount:
+                type: string
+                example: ''
+              recommendedQuantity:
+                type: string
+                example: ''
+              reducedBom:
+                type: boolean
+                example: ''
+              recommendedSparepart:
+                type: boolean
+                example: ''
+              option:
+                type: string
+                example: ''
+              cleaningClassParticularPC:
+                type: string
+                example: ''
+              cleaningClassParticularFC:
+                type: string
+                example: ''
+              cleaningClassParticularVC:
+                type: string
+                example: ''
+              clnDocumentNumber:
+                type: string
+                example: ''
+              clnDocumentType:
+                type: string
+                example: ''
+              clnDocumentVersion:
+                type: string
+                example: ''
+              clnDocumentPart:
+                type: string
+                example: ''
+              cuFactor:
+                type: string
+                example: ''
+              criticalComponent:
+                type: string
+                example: ''
+              criticalLevel:
+                type: string
+                example: ''
+              bomNumber:
+                type: string
+                example: ''
+              itmeNode:
+                type: string
+                example: ''
+              itemCount:
+                type: string
+                example: ''
+              recursive:
+                type: boolean
+                example: ''
+              dependencyLink:
+                type: string
+                example: ''
+              aleIndicator:
+                type: boolean
+                example: ''
+              validTo:
+                type: string
+                example: ''
+              changeNumberTo:
+                type: string
+                example: ''
+              createdOn:
+                type: string
+                example: ''
+              createdBy:
+                type: string
+                example: ''
+              changeOn:
+                type: string
+                example: ''
+              changedBy:
+                type: string
+                example: ''
+              alternateBom:
+                type: string
+                example: ''
+              deleteIndicator:
+                type: boolean
+                example: ''
+              segmentRelavent:
+                type: boolean
+                example: ''
+              idItemCategory:
+                type: string
+                example: ''
+              idItemNumber:
+                type: string
+                example: ''
+              idComponent:
+                type: string
+                example: ''
+              idClass:
+                type: string
+                example: ''
+              idClassType:
+                type: string
+                example: ''
+              idDocumentNumber:
+                type: string
+                example: ''
+              idDocumentType:
+                type: string
+                example: ''
+              idDocumentPart:
+                type: string
+                example: ''
+              idDocumentVersion:
+                type: string
+                example: ''
+              idSort:
+                type: string
+              idGuid:
+                type: string
+                example: ''
+    createBomItemsResponse:
+      type: object
+      properties:
+        plant:
+          type: string
+          example: ''
+        bomUsage:
+          type: string
+          example: 1
+        bomAlternative:
+          type: string
+          example: ''
+        validFrom:
+          type: string
+          example: '01.07.2022'
+        changeNumber:
+           type: string
+           example:
+        baseQuantity:
+         type: string
+         example: 1
+        baseUnit:
+         type: string
+         example: ST
+        bomStatus:
+         type: string
+         example: 'example'
+        alternateText:
+         type: string
+         example: 'example'
+        laboratory:
+         type: string
+         example: '000'
+        deleteIndicator:
+         type: boolean
+         example: true
+        bomText:
+         type: string
+         example: 'example'
+        bomGroup:
+         type: string
+         example: 'example'
+        authGroup:
+         type: string
+         example: 'example'
+        cadIndicator:
+         type: boolean
+         example: true
+        lifeCycleRelevalent:
+         type: boolean
+         example: true
+        pssOfficial:
+         type: string
+         example: 'example'
+        idGuid:
+         type: string
+         example: 'example'
+        bomNumber:
+         type: string
+         example: 'example'
+        aleIndicator:
+         type: boolean
+         example: true
+        validTo:
+         type: string
+         example: 'example'
+        changeNumberTo:
+         type: string
+         example: 'example'
+        createdOn:
+         type: string
+         example: 'example'
+        createdBy:
+         type: string
+         example: 'example'
+        changedOn:
+         type: string
+         example: 'example'
+        changedBy:
+         type: string
+         example: 'example'
+        headerChangeNumber:
+         type: string
+         example: 'example'
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              itemCategory:
+                type: string
+                example: 'L'
+              itemNumber:
+                type: string
+                example: '0017'
+              bomItemNodeNumber:
+                type: string
+                example: ''
+              itemCount:
+                type: string
+                example: ''
+              windchillPartUsageLinkId:
+                type: string
+                example: '346204'
+    extendMaterialsForPlant:
+      type: object
+      properties:
+        bomUsage:
+          type: string
+          example: '1'
+        bomAlternative:
+          type: string
+          example: '01'
+        validFrom:
+          type: string
+          example: '01.07.2022'
+        changeNumber:
+          type: string
+          example: ''
+        components:
+          type: array
+          items:
+            type: object
+          example: ["2311231","2311232"]
+    extendMaterialsForPlantResponse:
+      type: object
+      properties:
+        bomUsage:
+          type: string
+          example: '1'
+        bomAlternative:
+          type: string
+          example: '01'
+        validFrom:
+          type: string
+          example: '01.07.2022'
+        changeNumber:
+          type: string
+          example: ''
+        components:
+          type: array
+          items:
+            type: object
+          example: [ "2311231","2311232" ]
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: "https://identity.trumpf.com/oauth2/authorize"
+          scopes:
+            'bom:write': write bom
+            'bom:read': read bom
+          x-scopes-bindings:
+            'bom:write': Internal/bom_write
+            'bom:read': Internal/bom_read

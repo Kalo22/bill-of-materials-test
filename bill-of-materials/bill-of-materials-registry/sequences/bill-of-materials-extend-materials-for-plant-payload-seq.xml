@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="bill-of-materials-extend-materials-for-plant-payload-seq" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-payload-seq"/>
+        <with-param name="Message" value="Start of request flow of extending materials for plants. Validating input payload"/>
+    </call-template>
+    <validate cache-schema="true">
+        <schema key="gov:com/trumpf/esb/services/bill-of-materials/v1/schemas/bill-of-materials-extend-materials-for-plant-schema.json"/>
+        <on-fail>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/error-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bbill-of-materials-extend-materials-for-plant-payload-seq"/>
+                <with-param name="CUSTOM_ERROR_MESSAGE" value="Invalid request payload, failed json schema validation"/>
+                <with-param name="OUT_ERROR_MESSAGE" value="{concat('Incorrect input payload, ', $ctx:ERROR_MESSAGE)}"/>
+                <with-param name="HTTP_CODE" value="400"/>
+            </call-template>
+            <respond/>
+        </on-fail>
+    </validate>
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-payload-seq"/>
+        <with-param name="Message" value="Schema validation is successful. Transforming input json message to SAP required format."/>
+    </call-template>
+    <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-extend-materials-for-plant-payload-transformation.xsl">
+        <property expression="$ctx:uri.var.materialNumber" name="materialNumber"/>
+    </xslt>
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-payload-seq"/>
+        <with-param name="Message" value="End of request flow of extending materials for plants."/>
+    </call-template>
+</sequence>

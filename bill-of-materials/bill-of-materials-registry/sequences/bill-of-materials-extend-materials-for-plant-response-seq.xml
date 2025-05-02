@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="bill-of-materials-extend-materials-for-plant-response-seq" trace="disable"
+          xmlns="http://ws.apache.org/ns/synapse">
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+        <with-param name="Message" value="Start of response flow of extending materials for plants."/>
+    </call-template>
+
+    <!-- Create response base on SAP ES_RETURN TYPE value -->
+    <switch source="$body/Z_PP_BOM_EXT_MAT_FOR_PLANT/OUTPUT/ES_RETURN/TYPE">
+        <case regex="S">
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+                <with-param name="Message"
+                            value="{concat('All material are successfully extended for the plants. SAP message: ', $body/Z_PP_BOM_CHANGE/OUTPUT/ES_RETURN/MESSAGE/text())}"/>
+            </call-template>
+            <property name="HTTP_SC" scope="axis2" type="STRING" value="200"/>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+                <with-param name="Message"
+                            value="Converting SAP response into json format."/>
+            </call-template>
+            <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-extend-materials-for-plant-response-transformation.xsl"/>
+            <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+            <property name="ContentType" scope="axis2" type="STRING" value="application/json"/>
+        </case>
+        <case regex="W">
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+                <with-param name="Message"
+                            value="{concat('Extending material for the plant response has warnings. SAP message: ', $body/Z_PP_BOM_CHANGE/OUTPUT/ES_RETURN/MESSAGE/text())}"/>
+            </call-template>
+            <property name="HTTP_SC" scope="axis2" type="STRING" value="210"/>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+                <with-param name="Message"
+                            value="Converting SAP response into json format."/>
+            </call-template>
+            <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-extend-materials-for-plant-response-transformation.xsl"/>
+            <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+            <property name="ContentType" scope="axis2" type="STRING" value="application/json"/>
+        </case>
+        <default>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+                <with-param name="Message"
+                            value="{concat('Creating an error payload to return to the user based on SAP error: ', $body/Z_PP_BOM_CHANGE/OUTPUT/ES_RETURN/MESSAGE/text())}"/>
+            </call-template>
+            <!-- Different error based on the number -->
+            <switch source="$body/Z_PP_BOM_CHANGE/OUTPUT/Z_PP_BOM_EXT_MAT_FOR_PLANT/NUMBER/text()">
+                <case regex="305">
+                    <property name="HTTP_SC" scope="axis2" type="STRING" value="404"/>
+                </case>
+                <default>
+                    <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+                </default>
+            </switch>
+
+            <property name="errorMessage"
+                      expression="$body/Z_PP_BOM_EXT_MAT_FOR_PLANT/OUTPUT/ES_RETURN/MESSAGE/text()"/>
+            <property name="errorCode" expression="$body/Z_PP_BOM_EXT_MAT_FOR_PLANT/OUTPUT/ES_RETURN/NUMBER/text()"/>
+            <property name="errorClass" expression="$body/Z_PP_BOM_EXT_MAT_FOR_PLANT/OUTPUT/ES_RETURN/ID/text()"/>
+
+            <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-create-detailed-error-message.xsl">
+                <property value="extend-material-for-plant" name="type"/>
+            </xslt>
+
+            <filter xmlns="http://ws.apache.org/ns/synapse" xpath="boolean(//detailedErrorMessage)">
+                <then>
+                    <property expression="//detailedErrorMessage" name="detailedError"
+                              xmlns:ns="http://org.apache.synapse/xsd"/>
+                    <property expression="//detailedErrorMessage" name="detailedErrorMessage"
+                              xmlns:ns="http://org.apache.synapse/xsd" type="OM"/>
+                    <property name="logMessage"
+                              expression="fn:concat('Error occurred in extending materials for plant. Error message: ', $ctx:errorMessage, ' , error description: ', $ctx:detailedError, ' , error number: ', $ctx:errorCode, ' , error class id: ', $ctx:errorClass) "/>
+                    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                        <with-param name="ProjectName" value="bill-of-materials"/>
+                        <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+                        <with-param name="Message" value="{$ctx:logMessage}"/>
+                    </call-template>
+                    <payloadFactory media-type="xml">
+                        <format>
+                            <jsonObject>
+                                <errorClass>$1</errorClass>
+                                <errorCode>$2</errorCode>
+                                <errorMessage>$3</errorMessage>
+                                $4
+                            </jsonObject>
+                        </format>
+                        <args>
+                            <arg evaluator="xml" expression="$ctx:errorClass"/>
+                            <arg evaluator="xml" expression="$ctx:errorCode"/>
+                            <arg evaluator="xml" expression="$ctx:errorMessage"/>
+                            <arg evaluator="xml" expression="get-property('detailedErrorMessage')"/>
+                        </args>
+                    </payloadFactory>
+                </then>
+                <else>
+                    <property name="logMessage"
+                              expression="fn:concat('Error occurred in extending materials for plant. Error message: ', $ctx:errorMessage, ' , error number: ', $ctx:errorCode, ' , error class id: ', $ctx:errorClass) "/>
+                    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                        <with-param name="ProjectName" value="bill-of-materials"/>
+                        <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+                        <with-param name="Message" value="{$ctx:logMessage}"/>
+                    </call-template>
+                    <payloadFactory media-type="xml">
+                        <format>
+                            <jsonObject>
+                                <errorClass>$1</errorClass>
+                                <errorCode>$2</errorCode>
+                                <errorMessage>$3</errorMessage>
+                            </jsonObject>
+                        </format>
+                        <args>
+                            <arg evaluator="xml" expression="$ctx:errorClass"/>
+                            <arg evaluator="xml" expression="$ctx:errorCode"/>
+                            <arg evaluator="xml" expression="$ctx:errorMessage"/>
+                        </args>
+                    </payloadFactory>
+                </else>
+            </filter>
+            <property name="messageType" value="application/json" scope="axis2" type="STRING"/>
+        </default>
+    </switch>
+
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-extend-materials-for-plant-response-seq"/>
+        <with-param name="Message" value="End of response flow of extending materials for plants."/>
+    </call-template>
+</sequence>

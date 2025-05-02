@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="bill-of-materials-get-response-seq" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-get-response-seq"/>
+        <with-param name="Message" value="Starting the bill-of-materials get response flow."/>
+    </call-template>
+    <!-- If the Type element exists create an error, if not create a response -->
+    <filter regex="true" source="boolean($body/Z_PP_BOM_READ/OUTPUT/ES_RETURN/TYPE='E')" xmlns:ns="http://org.apache.synapse/xsd">
+        <then>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-get-response-seq"/>
+                <with-param name="Message" value="{concat('Creating an error payload to return to the user based on SAP error: ', $body/Z_PP_BOM_READ/OUTPUT/ES_RETURN/MESSAGE/text())}"/>
+            </call-template>
+            <!-- Different error based on the number -->
+            <switch source="$body/Z_PP_BOM_READ/OUTPUT/ES_RETURN/NUMBER/text()">
+                <case regex="305">
+                    <property name="HTTP_SC" scope="axis2" type="STRING" value="404"/>
+                </case>
+                <default>
+                    <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+                </default>
+            </switch>
+            <property name="errorMessage" expression="$body/Z_PP_BOM_READ/OUTPUT/ES_RETURN/MESSAGE/text()"/>
+            <property name="errorCode" expression="$body/Z_PP_BOM_READ/OUTPUT/ES_RETURN/NUMBER/text()"/>
+            <property name="errorClass" expression="$body/Z_PP_BOM_READ/OUTPUT/ES_RETURN/ID/text()"/>
+            <property name="logMessage" expression="fn:concat('Error occurred in BOM API get flow. Error message: ', $ctx:errorMessage, ' , error number: ', $ctx:errorCode, ' , error class id: ', $ctx:errorClass) "/>
+
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-get-response-seq"/>
+                <with-param name="Message" value="{$ctx:logMessage}"/>
+            </call-template>
+
+            <payloadFactory media-type="xml">
+                <format>
+                    <jsonObject>
+                        <errorClass>$1</errorClass>
+                        <errorCode>$2</errorCode>
+                        <errorMessage>$3</errorMessage>
+                    </jsonObject>
+                </format>
+                <args>
+                    <arg evaluator="xml" expression="$ctx:errorClass"/>
+                    <arg evaluator="xml" expression="$ctx:errorCode"/>
+                    <arg evaluator="xml" expression="$ctx:errorMessage"/>
+                </args>
+            </payloadFactory>
+            <property name="messageType" value="application/json" scope="axis2" type="STRING"/>
+        </then>
+        <else>
+            <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-get-response-transformation.xsl"/>
+            <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+            <property name="ContentType" scope="axis2" type="STRING" value="application/json"/>
+        </else>
+    </filter>
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-get-response-seq"/>
+        <with-param name="Message" value="Ending the bill-of-materials get response flow."/>
+    </call-template>
+</sequence>

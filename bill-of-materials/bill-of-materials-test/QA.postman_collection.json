@@ -1,0 +1,384 @@
+{
+	"info": {
+		"_postman_id": "14151af5-4302-462a-bfab-cb1b313fe3a3_QA",
+		"name": "BOM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1046636"
+	},
+	"item": [
+		{
+			"name": "Get BOM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonBody = pm.response.json();",
+							"",
+							"pm.test(\"status code should be 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Doesn't have bad headers\", function () {",
+							"    pm.response.to.not.have.header(\"X-JWT-Assertion\");",
+							"    pm.response.to.not.have.header(\"Authorization\");",
+							"    pm.response.to.not.have.header(\"Set-Cookie\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_external}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{GWInternalDomain}}:{{GWPort}}/bill-of-materials/1.0/2770781?bomUsage=1&validFrom=30.09.2022&validTo=30.09.2022",
+					"protocol": "https",
+					"host": [
+						"{{GWInternalDomain}}"
+					],
+					"port": "{{GWPort}}",
+					"path": [
+						"bill-of-materials",
+						"1.0",
+						"2770781"
+					],
+					"query": [
+						{
+							"key": "bomUsage",
+							"value": "1"
+						},
+						{
+							"key": "validFrom",
+							"value": "30.09.2022"
+						},
+						{
+							"key": "validTo",
+							"value": "30.09.2022"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bad Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonBody = pm.response.json();",
+							"",
+							"pm.test(\"status code should be 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Doesn't have bad headers\", function () {",
+							"    pm.response.to.not.have.header(\"X-JWT-Assertion\");",
+							"    pm.response.to.not.have.header(\"Authorization\");",
+							"    pm.response.to.not.have.header(\"Set-Cookie\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_external}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{GWInternalDomain}}:{{GWPort}}/bill-of-materials/1.0/2410666?validFrom=30.09.2022&validTo=30.09.2022",
+					"protocol": "https",
+					"host": [
+						"{{GWInternalDomain}}"
+					],
+					"port": "{{GWPort}}",
+					"path": [
+						"bill-of-materials",
+						"1.0",
+						"2410666"
+					],
+					"query": [
+						{
+							"key": "bomUsage",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "validFrom",
+							"value": "30.09.2022"
+						},
+						{
+							"key": "validTo",
+							"value": "30.09.2022"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BOM Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonBody = pm.response.json();",
+							"",
+							"pm.test(\"status code should be 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Doesn't have bad headers\", function () {",
+							"    pm.response.to.not.have.header(\"X-JWT-Assertion\");",
+							"    pm.response.to.not.have.header(\"Authorization\");",
+							"    pm.response.to.not.have.header(\"Set-Cookie\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_external}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{GWInternalDomain}}:{{GWPort}}/bill-of-materials/1.0/24106XX?bomUsage=1&validFrom=30.09.2022&validTo=30.09.2022",
+					"protocol": "https",
+					"host": [
+						"{{GWInternalDomain}}"
+					],
+					"port": "{{GWPort}}",
+					"path": [
+						"bill-of-materials",
+						"1.0",
+						"24106XX"
+					],
+					"query": [
+						{
+							"key": "bomUsage",
+							"value": "1"
+						},
+						{
+							"key": "validFrom",
+							"value": "30.09.2022"
+						},
+						{
+							"key": "validTo",
+							"value": "30.09.2022"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get BOMs - Success",
+			"event": [
+							{
+											"listen": "test",
+											"script": {
+															"exec": [
+																			"const jsonBody = pm.response.json();",
+																			"",
+																			"pm.test(\"status code should be 200\", function () {",
+																			"    pm.response.to.have.status(200);",
+																			"});",
+																			"",
+																			"pm.test(\"Doesn't have bad headers\", function () {",
+																			"    pm.response.to.not.have.header(\"X-JWT-Assertion\");",
+																			"    pm.response.to.not.have.header(\"Authorization\");",
+																			"    pm.response.to.not.have.header(\"Set-Cookie\");",
+																			"});"
+															],
+															"type": "text/javascript"
+											}
+							}
+			],
+			"request": {
+							"auth": {
+											"type": "bearer",
+											"bearer": [
+															{
+																			"key": "token",
+																			"value": "{{token_external}}",
+																			"type": "string"
+															}
+											]
+							},
+							"method": "GET",
+							"header": [],
+							"url": {
+											"raw": https://{{GWInternalDomain}}:{{GWPort}}/bill-of-materials/1.0/0359010/boms?changeNumber=060410-571HK,
+											"protocol": "https",
+											"host": [
+															"{{GWInternalDomain}}"
+											],
+											"port": "{{GWPort}}",
+											"path": [
+															"bill-of-materials",
+															"1.0",
+															"0359010",
+															"boms"
+											],
+											"query": [
+															{
+																			"key": "changeNumber",
+																			"value": "060410-571HK"
+															}
+											]
+							}
+			},
+			"response": []
+},
+{
+			"name": "Get BOMs - Schema validation failure",
+			"event": [
+							{
+											"listen": "test",
+											"script": {
+															"exec": [
+																			"const jsonBody = pm.response.json();",
+																			"",
+																			"pm.test(\"status code should be 400\", function () {",
+																			"    pm.response.to.have.status(400);",
+																			"});",
+																			"",
+																			"pm.test(\"Doesn't have bad headers\", function () {",
+																			"    pm.response.to.not.have.header(\"X-JWT-Assertion\");",
+																			"    pm.response.to.not.have.header(\"Authorization\");",
+																			"    pm.response.to.not.have.header(\"Set-Cookie\");",
+																			"});"
+															],
+															"type": "text/javascript"
+											}
+							}
+			],
+			"request": {
+							"auth": {
+											"type": "bearer",
+											"bearer": [
+															{
+																			"key": "token",
+																			"value": "{{token_external}}",
+																			"type": "string"
+															}
+											]
+							},
+							"method": "GET",
+							"header": [],
+							"url": {
+											"raw": https://{{GWInternalDomain}}:{{GWPort}}/bill-of-materials/1.0/0359010/boms,
+											"protocol": "https",
+											"host": [
+															"{{GWInternalDomain}}"
+											],
+											"port": "{{GWPort}}",
+											"path": [
+															"bill-of-materials",
+															"1.0",
+															"0359010",
+															"boms"
+											]
+							}
+			},
+			"response": []
+},
+{
+			"name": "Get BOMs - 404 bom not found",
+			"event": [
+							{
+											"listen": "test",
+											"script": {
+															"exec": [
+																			"const jsonBody = pm.response.json();",
+																			"",
+																			"pm.test(\"status code should be 404\", function () {",
+																			"    pm.response.to.have.status(404);",
+																			"});",
+																			"",
+																			"pm.test(\"Doesn't have bad headers\", function () {",
+																			"    pm.response.to.not.have.header(\"X-JWT-Assertion\");",
+																			"    pm.response.to.not.have.header(\"Authorization\");",
+																			"    pm.response.to.not.have.header(\"Set-Cookie\");",
+																			"});"
+															],
+															"type": "text/javascript"
+											}
+							}
+			],
+			"request": {
+							"auth": {
+											"type": "bearer",
+											"bearer": [
+															{
+																			"key": "token",
+																			"value": "{{token_external}}",
+																			"type": "string"
+															}
+											]
+							},
+							"method": "GET",
+							"header": [],
+							"url": {
+											"raw": https://{{GWInternalDomain}}:{{GWPort}}/bill-of-materials/1.0/0359010/boms?changeNumber=060410-571HK&validFrom=00000000,
+											"protocol": "https",
+											"host": [
+															"{{GWInternalDomain}}"
+											],
+											"port": "{{GWPort}}",
+											"path": [
+															"bill-of-materials",
+															"1.0",
+															"0359010",
+															"boms"
+											],
+											"query": [
+															{
+																			"key": "changeNumber",
+																			"value": "060410-571HK"
+															},
+															{
+																			"key": "validFrom",
+																			"value": "00000000"
+															}
+											]
+							}
+			},
+			"response": []
+}
+	]
+}

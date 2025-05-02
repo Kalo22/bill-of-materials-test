@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="bill-of-materials-boms-get-payload-seq" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-boms-get-payload-seq"/>
+        <with-param name="Message" value="Starting the bill-of-materials boms get request flow."/>
+    </call-template>
+    <filter xpath="boolean($ctx:query.param.validFrom) or boolean($ctx:query.param.changeNumber)">
+        <then/>
+        <else>
+            <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/error-template-v1.xml">
+                <with-param name="ProjectName" value="bill-of-materials"/>
+                <with-param name="SequenceName" value="bill-of-materials-create-payload-seq"/>
+                <with-param name="OUT_ERROR_MESSAGE" value="Error validating schema , one of 'validFrom' or 'changeNumber' should be present."/>
+                <with-param name="CUSTOM_ERROR_MESSAGE" value="Error validating schema , one of 'validFrom' or 'changeNumber' should be present."/>
+                <with-param name="HTTP_CODE" value="400"/>
+            </call-template>
+        </else>
+    </filter>
+    <payloadFactory media-type="xml">
+        <format>
+            <root/>
+        </format>
+        <args/>
+    </payloadFactory>
+    <!-- Use xslt to create a payload to send to the SAP -->
+    <xslt key="gov:com/trumpf/esb/services/bill-of-materials/xslt/bill-of-materials-boms-get-payload-transformation.xsl">
+        <property expression="$ctx:uri.var.materialNumber" name="materialNumber"/>
+        <property expression="$ctx:query.param.validFrom" name="validFrom"/>
+        <property expression="$ctx:query.param.changeNumber" name="changeNumber"/>
+    </xslt>
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/logger-template-v1.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-boms-get-payload-seq"/>
+        <with-param name="Message" value="Ending the bill-of-materials boms get request flow."/>
+    </call-template>
+</sequence>

@@ -1,0 +1,59 @@
+name: Bill-Of-Materials
+description: APi to create , update and get Bill of Materials
+context: "/bill-of-materials"
+version: "1.0"
+newVersion: ""
+provider: "admin"
+wsdlUri: 
+status: Publish
+responseCaching: Disabled
+thumbnail: "/thumbnail/billOfMat.jpeg"
+isDefaultVersion: false
+type: HTTP
+visibility: PUBLIC
+endpointConfig:
+  sb:
+    production: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+    sandbox: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+  dev:
+    production: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+    sandbox: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+  qa:
+    production: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+    sandbox: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+  stgn:
+    production: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+    sandbox: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+  prod:
+    production: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+    sandbox: "https://{{ product_map.wso2mi.private.hostname }}:443/bill-of-materials/1.0"
+document:
+  addDoc: false
+  visibility: "API_LEVEL"
+  sourceType: "INLINE"
+  summary: "This is a sample documentation"
+  name: "doc1"
+  type: "HOWTO"
+mediation:
+  files: do-nothing # What should do for the mediation files: add, update, do-nothing
+  inSeqName: #"add_custom_header_in1"
+  outSeqName: #"add_custom_header_out1"
+  faultSeqName: #"add_custom_header_fault1"
+gateway_list:
+  local:
+    - Internal Gateway
+  dev:
+    - Internal Gateway
+  qa:
+    - Internal Gateway
+    - Public Gateway
+  stgn:
+    - Internal Gateway
+    - Public Gateway
+  prod:
+    - Internal Gateway
+    - Public Gateway
+tiers:
+  - Gold
+  - Bronze
+  - Silver

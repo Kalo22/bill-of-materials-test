@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="bill-of-materials-fault-seq.xml" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+
+    <!-- Extract WSO2 error properties to local context -->
+    <property name="ERROR_CODE" expression="$ctx:error_code" scope="default"/>
+    <property name="ERROR_MESSAGE" expression="$ctx:error_message" scope="default"/>
+
+    <!-- Log the extracted values -->
+    <log level="full">
+        <property name="DEBUG" value="--- Starting bill-of-materials-fault-seq ---"/>
+        <property name="Extracted_ERROR_CODE" expression="$ctx:ERROR_CODE"/>
+        <property name="Extracted_ERROR_MESSAGE" expression="$ctx:ERROR_MESSAGE"/>
+    </log>
+
+    <!-- Categorize error based on extracted code using source+regex -->
+    <filter source="$ctx:ERROR_CODE" regex="^(101500|101503)$">
+        <then>
+            <log level="custom">
+                <property name="MATCH" value="ERROR_CODE = 101500/101503 (Connection Refused)"/>
+            </log>
+            <property name="OUT_ERROR_MESSAGE" value="The service is unreachable. Please try again later."/>
+            <property name="CUSTOM_ERROR_MESSAGE" value="Connection refused"/>
+            <property name="HTTP_CODE" value="502"/>
+        </then>
+        <else>
+            <filter source="$ctx:ERROR_CODE" regex="^(101504|101505|101508)$">
+                <then>
+                    <log level="custom">
+                        <property name="MATCH" value="ERROR_CODE = 101504/10150/101508 (Timeout)"/>
+                    </log>
+                    <property name="OUT_ERROR_MESSAGE" value="The service did not respond in time."/>
+                    <property name="CUSTOM_ERROR_MESSAGE" value="Send or read timeout"/>
+                    <property name="HTTP_CODE" value="504"/>
+                </then>
+                <else>
+                    <filter source="$ctx:ERROR_CODE" regex="^101501$">
+                        <then>
+                            <log level="custom">
+                                <property name="MATCH" value="ERROR_CODE = 101501 (Connection Timeout)"/>
+                            </log>
+                            <property name="OUT_ERROR_MESSAGE" value="The connection to the service timed out."/>
+                            <property name="CUSTOM_ERROR_MESSAGE" value="Connection timeout"/>
+                            <property name="HTTP_CODE" value="504"/>
+                        </then>
+                        <else>
+                            <log level="custom">
+                                <property name="MATCH" value="Unrecognized ERROR_CODE – fallback to generic 500"/>
+                            </log>
+                            <property name="OUT_ERROR_MESSAGE" value="An unexpected error occurred."/>
+                            <property name="CUSTOM_ERROR_MESSAGE" expression="$ctx:ERROR_MESSAGE"/>
+                            <property name="HTTP_CODE" value="500"/>
+                        </else>
+                    </filter>
+                </else>
+            </filter>
+        </else>
+    </filter>
+
+    <!-- Call error template -->
+    <log level="custom">
+        <property name="ACTION" value="Calling error-template-v2 with resolved values"/>
+        <property name="Final_OUT_ERROR_MESSAGE" expression="$ctx:OUT_ERROR_MESSAGE"/>
+        <property name="Final_CUSTOM_ERROR_MESSAGE" expression="$ctx:CUSTOM_ERROR_MESSAGE"/>
+        <property name="Final_HTTP_CODE" expression="$ctx:HTTP_CODE"/>
+    </log>
+
+    <call-template target="gov:com/trumpf/esb/services/commons/esb-commons/v1/templates/error-template-v2.xml">
+        <with-param name="ProjectName" value="bill-of-materials"/>
+        <with-param name="SequenceName" value="bill-of-materials-fault-seq"/>
+        <with-param name="OUT_ERROR_MESSAGE" value="{$ctx:OUT_ERROR_MESSAGE}"/>
+        <with-param name="CUSTOM_ERROR_MESSAGE" value="{$ctx:CUSTOM_ERROR_MESSAGE}"/>
+        <with-param name="HTTP_CODE" value="{$ctx:HTTP_CODE}"/>
+        <with-param name="LOG_LEVEL" value="ERROR"/>
+        <with-param name="ROLLBACK_TO_QUEUE" value="FALSE"/>
+    </call-template>
+
+    <!-- Final log -->
+    <log level="custom">
+        <property name="DEBUG" value="--- Finished bill-of-materials-fault-seq ---"/>
+    </log>
+
+</sequence>

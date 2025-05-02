@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifacts>
+    <artifact name="bill-of-materials-api" groupId="com.trumpf.esb.services.bil-of-materials.api" version="0.0.42" type="synapse/api" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/api/bill-of-materials-api.xml</file>
+    </artifact>
+</artifacts>

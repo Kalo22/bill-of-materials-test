@@ -1,0 +1,43 @@
+parameters:
+  - name: deployCar
+    displayName: Deploy CAR file?
+    type: boolean
+    default: true
+  - name: deployAPIM
+    displayName: Deploy to APIM?
+    type: boolean
+    default: true
+  - name: deploySB
+    displayName: Deploy to SB?
+    type: boolean
+    default: false
+  - name: subEnvId
+    displayName: Sub Environment Identifier (e.g. sb (default), xx (name initials))
+    type: string
+    default: "sb"
+trigger:
+  branches:
+    include:
+      - master
+      - main
+      - feature/*
+    exclude:
+      - release/*
+  tags:
+    include:
+      - release-*
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: Integration Hub/artifact-pipelines
+      ref: main
+
+extends:
+  template: pipelines/azure-pipeline-car-apim-mi.yml@templates
+  parameters:
+    subEnvId: ${{ parameters.subEnvId }}
+    deploySB: ${{ parameters.deploySB }}
+    deployCar: ${{ parameters.deployCar }}
+    deployAPIM: ${{ parameters.deployAPIM }}

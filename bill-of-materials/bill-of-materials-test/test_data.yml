@@ -1,0 +1,21 @@
+# Check out https://srv01cf1.corp.trumpf.com/x/FwcZMg for further details
+set_scheduled_tests: false
+external_users:
+  - name: external # token name: token_name here: token_external
+    idp: globalIdP # optional; default is globalIdP
+    roles: # roles the user must have; optional
+      - Internal/bom_read
+      - Internal/bom_write
+    scopes: # Set scopes for Bearer token that are needed for the API calls of this user; optional
+      - bom:read
+      - bom:write
+
+# All APIs the test application must be subscribed to
+apis:
+  - context: /bill-of-materials/1.0
+
+# Application scopes
+# application:
+#   scopes:
+#     - test
+

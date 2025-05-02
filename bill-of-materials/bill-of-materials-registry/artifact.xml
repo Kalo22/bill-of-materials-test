@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifacts>
+    <artifact name="bill-of-materials-fault-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-fault-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-create-payload-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-create-payload-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-create-response-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-create-response-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-get-payload-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-get-payload-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-get-response-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-get-response-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-update-payload-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-update-payload-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-update-response-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-update-response-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-create-payload-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-create-payload-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-create-response-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-create-response-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-get-payload-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-get-payload-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-get-response-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-get-response-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-update-payload-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-update-payload-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-update-response-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-update-response-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-create-detailed-error-message" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-create-detailed-error-message.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-update-schema" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>schemas/bill-of-materials-update-schema.json</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/v1/schemas</path>
+            <mediaType>application/x-xsd+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-create-schema" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>schemas/bill-of-materials-create-schema.json</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/v1/schemas</path>
+            <mediaType>application/x-xsd+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-extend-materials-for-plant-schema" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>schemas/bill-of-materials-extend-materials-for-plant-schema.json</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/v1/schemas</path>
+            <mediaType>application/x-xsd+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-boms-get-payload-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-boms-get-payload-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-boms-get-response-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-boms-get-response-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-extend-materials-for-plant-payload-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-extend-materials-for-plant-payload-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-extend-materials-for-plant-response-seq" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>sequences/bill-of-materials-extend-materials-for-plant-response-seq.xml</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/sequences</path>
+            <mediaType>application/xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-boms-get-payload-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-boms-get-payload-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-boms-get-response-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-boms-get-response-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-extend-materials-for-plant-payload-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-extend-materials-for-plant-payload-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="bill-of-materials-extend-materials-for-plant-response-transformation" groupId="com.trumpf.esb.services.bill-of-materials.resource" version="0.0.42" type="registry/resource" serverRole="EnterpriseIntegrator">
+        <item>
+            <file>xslt/bill-of-materials-extend-materials-for-plant-response-transformation.xsl</file>
+            <path>/_system/governance/com/trumpf/esb/services/bill-of-materials/xslt</path>
+            <mediaType>application/xsl+xml</mediaType>
+        </item>
+    </artifact>
+</artifacts>
